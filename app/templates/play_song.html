@@ -1,0 +1,48 @@
+<!DOCTYPE>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <!-- Favicons -->
+  <link rel="icon" href="../static/img/songs_logo.png">
+
+  <title> TopHits </title>
+
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+  <style>
+    div {
+      position: fixed;
+      width: 100%;
+      bottom: 10px;
+    }
+  </style>
+</head>
+
+<body background="http://www.ivanyolo.com/wp-content/uploads/2018/01/best-cool-catchy-songs.png">
+  <h1 style="color: white;"><i class="fa fa-music" aria-hidden="true" style="margin-right: 10px;"></i> <i>{{ song_title }}</i> </h1>
+  <!-- <iframe width="420" height="315"
+src="https://www.youtube.com/embed/tgbNymZ7vqY">
+</iframe> -->
+
+  <!-- <div style="position:relative;width:267px;height:25px;overflow:hidden;">
+<div style="position:absolute;top:-276px;left:-5px">
+<iframe width="300" height="300"
+  src="https://www.youtube.com/watch?v=3r_Z5AYJJd4">
+</iframe> -->
+  <!-- </div>
+</div> -->
+
+  <div>
+    <audio controls autoplay style="width: 100%">
+      <source
+        src = {{ audio_url }}>
+    </audio>
+</div>
+</body>
+
+</html>

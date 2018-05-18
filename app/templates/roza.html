@@ -1,0 +1,90 @@
+<!-- <!DOCTYPE>
+<html>
+<head>
+  <style>
+  div.fixed {
+    position: fixed;
+    width: 50%;
+    bottom: 10px;
+    border: 3px solid #8AC007;
+}
+
+  </style>
+</head>
+<body> -->
+  <!-- <iframe width="420" height="315"
+src="https://www.youtube.com/embed/tgbNymZ7vqY">
+</iframe> -->
+
+<!-- <div style="position:relative;width:267px;height:25px;overflow:hidden;">
+<div style="position:absolute;top:-276px;left:-5px">
+<iframe width="300" height="300"
+  src="https://www.youtube.com/watch?v=3r_Z5AYJJd4">
+</iframe> -->
+<!-- </div>
+</div> -->
+
+
+
+<!-- <div class="fixed">
+<button id="3r_Z5AYJJd4" onclick="clickMe(this.id);"> Click Me </button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<audio id="youtube" autoplay controls loop style="width: 100%; "></audio>
+</div>
+
+
+<script>
+
+function clickMe(id){
+           alert(id);
+           phelaRoza(id)
+       }
+function phelaRoza(id){
+  var vid = id,
+  audio_streams = {};
+
+$.get('https://cors-anywhere.herokuapp.com/https://www.youtube.com/get_video_info?video_id=' + vid, function(data) {
+  var data = parse_str(data),
+    streams = (data.url_encoded_fmt_stream_map + ',' + data.adaptive_fmts).split(',');
+  console.log(streams);
+  $.each(streams, function(n, s) {
+    var stream = parse_str(s),
+      itag = stream.itag * 1,
+      quality = false;
+    console.log(stream);
+    switch (itag) {
+      case 139:
+        quality = "48kbps";
+        break;
+      case 140:
+        quality = "128kbps";
+        break;
+      case 141:
+        quality = "256kbps";
+        break;
+    }
+    if (quality) audio_streams[quality] = stream.url;
+  });
+  console.log(audio_streams);
+  $("#youtube").attr({
+    src: audio_streams['128kbps']
+  });
+});
+}
+
+function parse_str(str) {
+  return str.split('&').reduce(function(params, param) {
+    var paramSplit = param.split('=').map(function(value) {
+      return decodeURIComponent(value.replace('+', ' '));
+    });
+    params[paramSplit[0]] = paramSplit[1];
+    return params;
+  }, {});
+}
+</script> -->
+
+<!-- <iframe  width="425" height="344" src="https://www.youtube.com/embed/F9Bo89m2f6g" frameborder="0" allowfullscreen></iframe> -->
+
+
+<!-- </body>
+</html> -->

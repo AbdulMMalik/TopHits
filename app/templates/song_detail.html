@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <!-- Favicons -->
+  <link rel="icon" href="../static/img/songs_logo.png">
+  <title>
+    {{ searched_song.song_title }}
+  </title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../static/css/material-dashboard.css?v=2.0.0">
+  <!-- Documentation extras -->
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="../static/css/tophits.css" rel="stylesheet" />
+  <!-- iframe removal -->
+
+  <style>
+    .square {
+      float: left;
+      /* margin:1pt; */
+      width:80pt;
+      height:72pt;
+    }
+    .container {
+      text-align:center;
+      width:100%;
+      /* height: 80pt; */
+      margin-left: 50px;
+      background-color:  #e5e7e9;
+      height: 80px;
+      /* border-top: 1px solid #919191; */
+      /* border-bottom: 1px solid #919191; */
+    }
+    .centerwrapper {
+      margin: auto;
+      width: 420pt;
+    }
+  </style>
+</head>
+
+<body class="">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+      <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <!-- <img src="../static/img/ellie-goulding.jpg" alt="Avatar" style="width:100px; height: 100px; "> -->
+            <!-- <a class="navbar-brand" href="#pablo"><i <i class="fa fa-music" aria-hidden="true" style="margin-right: 10px;"></i><i> {{ searched_song.song_title }} </i></a> -->
+            <div class="logo row">
+              <a href="http://www.creative-tim.com" class="simple-text logo-normal" style="margin-left: 10px;">
+                    <img src="../static/img/songs_logo.png" style="width: 40px; height: 40px; margin-right: 5px;">
+              </a>
+              <h4 style="padding: 10px;"><b> TopHits </b><h4>
+            </div>
+          </div>
+
+          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <!-- <i class="fa fa-user fa-2x" aria-hidden="true" style="margin-right: 20px; color: #A641B9;"> </i> -->
+            <!-- <i class="fa fa-sign-out fa-2x" aria-hidden="true" style="color: #A641B9;"></i> -->
+            <div style="margin-right: 20px; margin-top: 5px;">
+              <a href="#about">
+                <i class="fa fa-user fa-2x"></i>
+              </a>
+              <p>
+                Profile
+              </p>
+            </div>
+            <div style="margin-top: 5px;">
+              <a href="#about">
+                <i class="fa fa-sign-out fa-2x"></i>
+              </a>
+              <p>
+                Logout
+              </p>
+            </div>
+              <!-- <form class="navbar-form">
+                  <div class="input-group no-border">
+                      <input type="text" value="" class="form-control" size="50" placeholder="Search Song by title">
+                      <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                          <i class="material-icons">search</i>
+                          <div class="ripple-container"></div>
+                      </button
+                  </div>
+              </form> -->
+          </div>
+      </div>
+  </nav>
+
+  <div class="wrapper" style="margin-top: 50px;">
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div style="margin-left: 15px;">
+              <div class="card card-profile">
+                <div class="card-body">
+                  <img src="../static/img/coverphotos/{{ searched_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:200px;height:200px;" alt="Cover Photo">
+                </div>
+              </div>
+          </div>
+
+          <div style="margin-left: 20px;">
+            <h3> {{ searched_song.song_title }} </h3>
+            <h4> {{ searched_song.song_title }} | English </h4>
+            <h5> Singer | {{ searched_song.artist_name }} </h5>
+            <h6> {{ searched_song.years }}  </h6>
+            <div class="row">
+              <i class="fa fa-heart-o" aria-hidden="true" style="margin-left: 15px;"> 5,673</i>
+              <i class="fa fa-play" aria-hidden="true" style="margin-left: 15px;"> 7,987</i>
+            </div>
+            <!-- <button> Play </button> -->
+            <a href={{ url_for("play_song", song_id=searched_song.youtube_id,
+                                song_title=searched_song.song_title) }} class="btn btn-primary" style="margin-top: 20px;"> <i class="fa fa-play" aria-hidden="true" style="margin-right: 7px;"></i> <b>Play</b></a>
+          </div>
+        </div>
+
+        <div class="row container">
+          <div class="centerwrapper">
+          <div class = "square">
+            <a href="#about">
+              <i class="fa fa-heart-o fa-2x" aria-hidden="true" style="margin-top: 15px;"></i>
+            </a>
+            <p>
+              Favourite
+            </p>
+          </div>
+
+          <div class = "square">
+            <a href="#about">
+              <i class="fa fa-plus-circle fa-2x" style="margin-top: 15px;"></i>
+            </a>
+            <p>
+              Add to Queue
+            </p>
+          </div>
+
+          <div class = "square">
+            <a href="#about">
+              <i class="fa fa-cloud-download fa-2x" aria-hidden="true" style="margin-top: 15px;"></i>
+            </a>
+            <p>
+              Download
+            </p>
+          </div>
+
+          <div class = "square">
+            <a href="#about" >
+              <i class="fa fa-share-alt-square fa-2x" aria-hidden="true" style="margin-top: 15px;"></i>
+            </a>
+            <p>
+              Share
+            </p>
+          </div>
+
+          <div class = "square">
+            <a href="#about">
+              <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-top: 15px;"></i>
+            </a>
+            <p>
+              Add to Playlist
+            </p>
+          </div>
+        </div>
+
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">Related Songs</h4>
+              <!-- <p class="card-category">Complete your profile</p> -->
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" text-primary">
+                    <th> Cover Photo </th>
+                    <th> Song Title </th>
+                    <th> Artist/Singer </th>
+                    <th> Duration </th>
+                    <th> Years </th>
+                    <th> Action </th>
+                  </thead>
+                  <tbody>
+                    {% for song in related_songs %}
+                      <tr>
+                        <td>
+                          <img src="../static/img/coverphotos/{{ song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:70px;height:70px; border-radius: 50%;" alt="Cover Photo">
+                        </td>
+                        <td> {{ song.song_title }} </td>
+                        <td> {{ song.artist_name }} </td>
+                        <td> {{ song.duration }} </td>
+                        <td> {{ song.years }} </td>
+                        <td>
+                        <a href={{ url_for("play_song", song_id=song.youtube_id,
+                                            song_title=song.song_title) }} class="btn btn-primary" style="margin-top: 20px;"> <i class="fa fa-play" aria-hidden="true" style="margin-right: 7px;"></i> <b>Play</b></a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="copyright pull-right" style="margin-top: 10px; margin-right: 10px;">
+        TopHits World Most Popular Site
+      </div>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+#filters{
+  overflow-x:hidden;
+}
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 23px;
+    height: 24px;
+    border: 0;
+    background-color: #9c27b0;
+    /* background-img: url('../static/img/contrasticon.png'); */
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 23px;
+    height: 24px;
+    border: 0;
+    background-color: #9c27b0;
+    /* background-img: url('../static/img/contrasticon.png'); */
+    cursor: pointer;
+}
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.card {
+  display: inline-block;
+  width: 35%;
+}
+
+p {
+  border-bottom:1px dotted #d8d8d8;
+  padding-bottom:15px;
+  font-size:17px
+}
+#slider {
+  width:500px;
+  top:100px;
+  position:absolute
+}
+#filter-form  {
+  width:300px;
+  height:470px;
+  position:absolute;
+  right:0;
+  border:1px solid #d8d8d8;
+  margin-left:40px;
+  padding:20px 40px;
+  border-radius:3px;
+  box-shadow:0 0 8px gray;
+  background-color: #EEEEEE;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+
+/* Custom Select */
+
+.custom-select {
+  /* position: relative; */
+  font-family: Arial;
+}
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+  /* background-color: DodgerBlue; */
+}
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  /* background-color: #9C27B0; */
+  /* color: #ffffff; */
+  color: black;
+  padding: 4px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  /* background-color: DodgerBlue; */
+  color: white;
+  background-color: #EEEEEE;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.option-color {
+  color: #ffffff;
+}
+/* Custom Select End */

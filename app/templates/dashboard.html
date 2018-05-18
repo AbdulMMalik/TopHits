@@ -1,0 +1,319 @@
+{% extends "base.html" %} {% block title %} Home {% endblock %}
+{% block css_files %}<link href="../static/css/dashboard.css" rel="stylesheet" />{% endblock %}
+
+<!-- body content -->
+{% block bodycontent %}
+<div class="main-panel">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+    <div class="container-fluid">
+
+      <div class="navbar-wrapper">
+        <a class="navbar-brand" href="#pablo"><i class="fa fa-home" style="padding-right: 5px;" aria-hidden="true"></i>Home</a>
+      </div>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navigation">
+        <!-- search feature -->
+        <form class="navbar-form" action="/search_songs" method="post">
+          <div class="input-group no-border">
+
+            <!-- Custom Select Combo Box -->
+            <div class="custom-select" style="width:10px; margin-right: 20px;">
+              <select name="options">
+                <option value="0" class="option-color">Search by Artist</option>
+                <option value="1" class="option-color">Search by Song</option>
+              </select>
+            </div>
+            <!-- Custom Select Combo Box -->
+            <input type="text" value="" name="search_field" class="form-control" size="70" placeholder="Search by Songs, Artists">
+            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+              <i class="material-icons">search</i>
+              <!-- <div class="ripple-container"></div> -->
+            </button>
+          </div>
+        </form>
+
+        <!--  filters panel -->
+        <div id="sidebar" onclick="open_filters_panel()">
+          <!-- #9B26AF -->
+          <i class="fa fa-filter" style="font-size:35px;margin-left:5px;"> </i>
+        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+
+            <div id="filters">
+              <!-- Sliding div starts here -->
+              <div id="slider" style="right:-342px;">
+                <!-- <div id="sidebar" onclick="open_filters_panel()"><img src="../static/img/favicon.png"></div> -->
+                <form>
+                  <div id="filter-form">
+                    <h2>Filters</h2>
+                    <!-- <p>This is my form.Please fill it out.It's awesome!</p> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" placeholder="Energy Level"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Sound Quality"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Danceability"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Tempo"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Loudness"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Mode"> -->
+                    <!-- <input type="text" value="" class="form-control" size="50" style="margin-top: 5px;" placeholder="Key"> -->
+                    <!-- <div style="display:inline-block;"> -->
+                    <!--  Energy Level -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="energy_level">
+                    <input type="checkbox" name="checkbox" id="energy_level_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Energy Level: </b><span id="energy_level_label"> Default </span></label>
+
+                    <!-- Sound Quality -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="sound_quality" style="margin-top: 5px;">
+                    <input type="checkbox" name="checkbox" id="sound_quality_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Sound Quality: </b><span id="sound_quality_label"> Default </span></label>
+
+                    <!-- Danceability factor -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="danceability" style="margin-top: 5px;">
+                    <input type="checkbox" name="checkbox" id="danceability_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Danceability: </b><span id="danceability_label"> Default </span></label>
+
+                    <!-- Valence -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="valence" style="margin-top: 5px;">
+                    <input type="checkbox" name="checkbox" id="valence_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Valence: </b><span id="valence_label"> Default </span></label>
+
+                    <!-- Loudness -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="loudness" style="margin-top: 5px;">
+                    <input type="checkbox" name="checkbox" id="loudness_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Loudness: </b><span id="loudness_label"> Default </span></label>
+
+                    <!-- Instrumentalness -->
+                    <input type="range" min="1" max="100" value="50" class="slider" id="instrumentalness" style="margin-top: 5px;">
+                    <input type="checkbox" name="checkbox" id="instrumentalness_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Instrumentalness: </b><span id="instrumentalness_label"> Default </span></label>
+                    <button style="margin-top: 15px; float: right; background-color: #BDBDBD; border: none; color: white; padding: 5px;">
+                                        Search</button>
+                  </div>
+                </form>
+              </div>
+              <!-- Sliding div ends here -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+
+
+  <!-- Top five Pleasant song cards -->
+  <!-- 1st song card -->
+  <div class="content">
+    <h3> <b>Top Pleasant Songs</b> </h3>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="scrolling-wrapper">
+          <!-- 1st songs card -->
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+          {% for pleasant_song in top_pleasant_songs %}
+            <div class="card card-stats">
+              <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                  <img src="../static/img/coverphotos/{{ pleasant_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                </div>
+                <p class="card-category">{{ pleasant_song.artist_name }}</p>
+                <h3 class="card-title">{{ pleasant_song.song_title[: 12].split("(")[0] }}<br/>
+                  <small>{{ pleasant_song.duration }}</small>
+                </h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <!-- <i class="material-icons text-danger">warning</i> -->
+                  <p>{{ pleasant_song.years }}</p>
+                  <!-- <a href="#pablo">Broken Glass</a> -->
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          <!-- </div> -->
+        </div>
+      </div>
+      <!--  Top five Pleasant songs cards end here -->
+
+
+      <!-- Top five Energetic song cards -->
+      <div class="content" style="padding-top: 10px;">
+        <h3><b> Top Energetic Songs </b></h3>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="scrolling-wrapper">
+              <!-- 1st songs card -->
+              <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+              {% for energetic_song in top_energetic_songs %}
+                <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                    <div class="card-icon">
+                      <!-- <i class="material-icons">content_copy</i> -->
+                      <img src="../static/img/coverphotos/{{ energetic_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                    </div>
+                    <p class="card-category">{{ energetic_song.artist_name }}</p>
+                    <h3 class="card-title">{{ energetic_song.song_title[: 12].split("(")[0] }}<br/>
+                      <small>{{ energetic_song.duration }}</small>
+                    </h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <!-- <i class="material-icons text-danger">warning</i> -->
+                      <p>{{ energetic_song.years }}</p>
+                      <!-- <a href="#pablo">Broken Glass</a> -->
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <!-- </div> -->
+            </div>
+          </div>
+          <!--  Top five Pleasant songs cards end here -->
+
+          <!-- Songs with minimum sound quality -->
+          <!-- 1st song card -->
+          <div class="content" style="padding-top: 10px;">
+            <h3><b> Non Acoustic Songs </b></h3>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="scrolling-wrapper">
+                  <!-- 1st songs card -->
+                  <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+                  {% for non_acoustic_song in non_acoustic_songs %}
+                    <div class="card card-stats">
+                      <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                          <!-- <i class="material-icons">content_copy</i> -->
+                          <img src="../static/img/coverphotos/{{ non_acoustic_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                        </div>
+                        <p class="card-category">{{ non_acoustic_song.artist_name }}</p>
+                        <h3 class="card-title">{{ non_acoustic_song.song_title[: 12].split("(")[0] }}<br/>
+                          <small>{{ non_acoustic_song.duration }}</small>
+                        </h3>
+                      </div>
+                      <div class="card-footer">
+                        <div class="stats">
+                          <!-- <i class="material-icons text-danger">warning</i> -->
+                          <p>{{ non_acoustic_song.years }}</p>
+                          <!-- <a href="#pablo">Broken Glass</a> -->
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <!--  Top five Pleasant songs cards end here -->
+
+
+              <!-- Songs with maximum sound quality -->
+              <!-- 1st song card -->
+              <div class="content" style="padding-top: 10px;">
+                <h3><b> Acoustic Songs </b></h3>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="scrolling-wrapper">
+                      <!-- 1st songs card -->
+                      <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+                      {% for acoustic_song in acoustic_songs %}
+                        <div class="card card-stats">
+                          <div class="card-header card-header-warning card-header-icon">
+                            <div class="card-icon">
+                              <!-- <i class="material-icons">content_copy</i> -->
+                              <img src="../static/img/coverphotos/{{ acoustic_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                            </div>
+                            <p class="card-category">{{ acoustic_song.artist_name[: 20] }}</p>
+                            <h3 class="card-title">{{ acoustic_song.song_title[: 12].split("(")[0] }}<br/>
+                              <small>{{ acoustic_song.duration }}</small>
+                            </h3>
+                          </div>
+                          <div class="card-footer">
+                            <div class="stats">
+                              <!-- <i class="material-icons text-danger">warning</i> -->
+                              <p>{{ acoustic_song.years }}</p>
+                              <!-- <a href="#pablo">Broken Glass</a> -->
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+              <!-- Danceable songs -->
+              <!-- 1st song card -->
+              <div class="content" style="padding-top: 10px;">
+                <h3><b> Danceable Songs </b></h3>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="scrolling-wrapper">
+                      <!-- 1st songs card -->
+                      <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+                      {% for danceable_song in danceable_songs %}
+                        <div class="card card-stats">
+                          <div class="card-header card-header-warning card-header-icon">
+                            <div class="card-icon">
+                              <!-- <i class="material-icons">content_copy</i> -->
+                              <img src="../static/img/coverphotos/{{ danceable_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                            </div>
+                            <p class="card-category">{{ danceable_song.song_title }}</p>
+                            <h3 class="card-title">{{ danceable_song.song_title[: 12].split("(")[0] }}<br/>
+                              <small>{{ danceable_song.duration }}</small>
+                            </h3>
+                          </div>
+                          <div class="card-footer">
+                            <div class="stats">
+                              <!-- <i class="material-icons text-danger">warning</i> -->
+                              <p>{{ danceable_song.years }}</p>
+                              <!-- <a href="#pablo">Broken Glass</a> -->
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                  <!--  Top danceable songs cards end here -->
+
+                  <!-- Songs with lowest tem -->
+                  <!-- 1st song card -->
+                  <div class="content" style="padding-top: 10px;">
+                    <h3><b> Low Tempo Songs </b></h3>
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="scrolling-wrapper">
+                          <!-- 1st songs card -->
+                          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+                          {% for low_tempo_song in low_tempo_songs %}
+                            <div class="card card-stats">
+                              <div class="card-header card-header-warning card-header-icon">
+                                <div class="card-icon">
+                                  <!-- <i class="material-icons">content_copy</i> -->
+                                  <img src="../static/img/coverphotos/{{ low_tempo_song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:100px;height:100px;" alt="Cover Photo">
+                                </div>
+                                <p class="card-category">{{ low_tempo_song.artist_name }}</p>
+                                <h3 class="card-title">{{ low_tempo_song.song_title[: 12].split("(")[0] }}<br/>
+                                  <small>{{ low_tempo_song.duration }}</small>
+                                </h3>
+                              </div>
+                              <div class="card-footer">
+                                <div class="stats">
+                                  <!-- <i class="material-icons text-danger">warning</i> -->
+                                  <p>{{ low_tempo_song.years }}</p>
+                                  <!-- <a href="#pablo">Broken Glass</a> -->
+                                </div>
+                              </div>
+                            </div>
+                          {% endfor %}
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="copyright pull-right" style="margin-top: 10px;">
+                    TopHits World Most Popular Site
+                  </div>
+                </div>
+
+                <!-- include java script for filter panel -->
+                <script src="../static/js/dashboard.js"></script>
+{% endblock %}
