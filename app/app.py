@@ -37,16 +37,20 @@ def home():
                 danceable_songs=danceable_songs,
                 low_tempo_songs=low_tempo_songs)
 
+@app.route('/artists')
+def artists():
+    artists = mongoc.get_artists(mongo)
+    return render_template("artists.html", artists=artists)
+
 
 # , method['POST']
-@app.route('/search_songs')
+@app.route('/search_songs', methods=['POST']) #, methods=['POST']
 def handle_user_song_search():
     # get search fields from request object
-    # search_field_text = request.form.get('search_field')
-    # search_base_option = request.form.get('options')
-
-    search_base_option = "1"
-    search_field_text = "Stuck on You"
+    search_field_text = request.form.get('search_field')
+    search_base_option = request.form.get('options')
+    # search_base_option = "0"
+    # search_field_text = "Rihanna"
 
     # fetch searched song using mongo object using depends upon option
     if search_base_option == "1": # if user searches songs using song title
@@ -54,7 +58,81 @@ def handle_user_song_search():
         return render_template("song_detail.html",
             searched_song=searched_song, related_songs=related_songs)
     elif search_base_option == "0": # else if user searches by artist
-        log.info("Came in else condition")
+        searched_songs = mongoc.search_song_by_artist_name(search_field_text, mongo)
+        for song in searched_songs:
+            artist_name = song.get('artist_name')
+            break
+            # filters
+        return render_template("user.html", searched_songs=searched_songs, artist_name=artist_name)
+        # return render_template("artist_profile.html")
+
+
+@app.route('/artists/<artist_name>')
+def artist_profile(artist_name):
+    searched_songs = mongoc.search_artist(artist_name, mongo)
+    return render_template("user.html", searched_songs=searched_songs, artist_name=artist_name)
+
+
+@app.route('/filters')
+def filters():
+    """
+    Fetches songs by applying default filters
+    """
+    filtered_songs = mongoc.find_filtered_songs(mongo, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 0.5)
+    return render_template("filters.html", searched_songs=filtered_songs)
+
+
+@app.route('/search_filtered_songs', methods=['POST'])
+def handle_filtering():
+    #get filter form feilds
+    energy_level = request.form.get('energy_level')
+    energy_level_checkbox = request.form.get('energy_level_checkbox')
+
+    sound_quality = request.form.get('sound_quality')
+    sound_quality_checkbox = request.form.get('sound_quality_checkbox')
+
+    danceability = request.form.get('danceability')
+    danceability_checkbox = request.form.get('danceability_checkbox')
+
+    valence = request.form.get('valence')
+    valence_checkbox = request.form.get('valence_checkbox')
+
+    loudness = request.form.get('loudness')
+    loudness_checkbox = request.form.get('loudness_checkbox')
+
+    instrumentalness = request.form.get('instrumentalness')
+    instrumentalness_checkbox = request.form.get('instrumentalness_checkbox')
+
+    if energy_level_checkbox is not None:
+        energy_level = float(energy_level)/100
+    else:
+        energy_level = 1
+
+    if sound_quality_checkbox is not None:
+        sound_quality = float(sound_quality)/100
+    else:
+        sound_quality = 1
+
+    if danceability_checkbox is not None:
+        danceability = float(danceability)/100
+    else:
+        danceability = 1
+
+    if valence_checkbox is not None:
+        valence = float(valence)/100
+    else:
+        valence = 1
+
+    log.info(str(energy_level) + " " + str(sound_quality) +
+     "  " + str(danceability) + "  " + str(valence))
+    filtered_songs = mongoc.find_filtered_songs(mongo, energy_level, sound_quality,
+                    danceability, valence, loudness, instrumentalness)
+
+    for song in filtered_songs:
+        log.info(song.get('song_title'))
+
+    return render_template("filters.html", searched_songs=filtered_songs)
 
 
 @app.route('/song/tophits/<song_id>/<song_title>')

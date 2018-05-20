@@ -26,7 +26,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("valence", pymongo.DESCENDING).limit(5)
 
         # take out results from cursor
@@ -35,6 +35,9 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
 
     def get_top_energetic_songs(self, mongo):
@@ -43,7 +46,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("energy", pymongo.DESCENDING).limit(5)
 
         # take out results from cursor
@@ -52,6 +55,9 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
 
     def get_non_acoustic_songs(self, mongo):
@@ -60,7 +66,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("Sound_quailty", pymongo.ASCENDING).limit(5)
 
         # take out results from cursor
@@ -69,6 +75,9 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
 
     def get_acoustic_songs(self, mongo):
@@ -77,7 +86,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("Sound_quailty", pymongo.DESCENDING).limit(5)
 
         # take out results from cursor
@@ -86,6 +95,9 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
 
     def get_danceable_songs(self, mongo):
@@ -94,7 +106,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("danceability", pymongo.DESCENDING).limit(5)
 
         # take out results from cursor
@@ -103,6 +115,9 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
 
     def get_low_tempo_songs(self, mongo):
@@ -111,7 +126,7 @@ class MongoController():
         """
         cursor = mongo.db.songs.find(
             {},
-            {"song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
+            {"id": 1, "youtube_id": 1, "song_title": 1, "artist_name": 1, "duration": 1, "years": 1},
         ).sort("tempo", pymongo.ASCENDING).limit(5)
 
         # take out results from cursor
@@ -120,7 +135,27 @@ class MongoController():
         # check if a new song is added which doest not has its coverphoto
         # if there is no coverphoto then download it from google images
         self.check_for_coverphotos(results)
+        # also check for youtube ids
+        self.check_for_youtube_ids(results, mongo)
+
         return results
+
+    def find_filtered_songs(self, mongo, energy_level, sound_quality,
+                    danceability, valence, loudness, instrumentalness):
+        """
+        searches songs by applying specific filters and return results
+        """
+
+        cursor = mongo.db.songs.find({ '$and':[{'energy': {'$lte': energy_level}}, {'Sound_quailty': {'$lte': sound_quality}}, {'danceability': {'$lte': danceability}}, {'valence': {'$lte': valence}}]})
+
+        filtered_songs = [res for res in cursor]
+        # check for coverphotos
+        self.check_for_coverphotos(filtered_songs)
+
+        #check for check_for_youtube_ids
+        self.check_for_youtube_ids(filtered_songs, mongo)
+
+        return filtered_songs
 
     """
     dashboard or home controller functions end here
@@ -165,37 +200,115 @@ class MongoController():
         # return both results
         return searched_song, related_songs
 
+    def search_song_by_artist_name(self, artist_name, mongo):
+        """
+        gets most suitable searched song of a particular singer
+        """
+        cursor = mongo.db.songs.find({'$text': {'$search': artist_name}})
+        searched_songs = [res for res in cursor]
 
-    """
-    Additional Methods
-    """
+        # check song for converphoto
+        self.check_for_coverphotos(searched_songs)
+        # check for youtube audio id
+        self.check_for_youtube_ids(searched_songs, mongo)
+        # check for Artists
+        self.check_for_artists_photo(searched_songs)
+
+        return searched_songs
+
+    def search_artist(self, artist_name, mongo):
+        """
+        find artist profile
+        """
+        cursor = mongo.db.songs.find({'artist_name': artist_name})
+        searched_songs = [res for res in cursor]
+
+        # check song for converphoto
+        self.check_for_coverphotos(searched_songs)
+        # check for youtube audio id
+        self.check_for_youtube_ids(searched_songs, mongo)
+        # return both results
+        return searched_songs
+
+    def get_artists(self, mongo):
+        """
+        get all artists in mongodb
+        """
+        cursor =  mongo.db.songs.aggregate([{'$group': {'_id': "$artist_name", 'count': {'$sum': 1}}}, {'$limit': 200}])
+        artists = []
+        for res in cursor:
+            artists.append({
+            'artist_name': res.get('_id'),
+            'count': res.get('count')
+            })
+
+        # check for artist photos
+        self.check_for_artists_photo(artists)
+        # return artists
+        return artists
+
     def check_for_coverphotos(self, results):
         """
         checks if a song contains converphoto in database
         if not than download it from googleimages
         """
         # itertate over each song of results
+        log.info(str(len(results)))
+        i = 0
         for idx, result in enumerate(results):
+            i = i + 1
+            log.info(str(i))
             # get path for coverphoto
-            coverphoto = result['song_title'].replace(" ", "").lower()
+            coverphoto = result['song_title'].replace(" ", "").replace(",", "").lower()
             coverphoto = Path("static/img/coverphotos/"+ coverphoto + ".jpg")
 
             # if coverphoto for that song does not exists
             if coverphoto.is_file() == False:
                 # set arguments to pass to gic
                 arguments = {
-                "keywords": result['song_title'] + " cover photo",
+                "keywords": result['song_title'].replace(",", "") + " cover photo",
                 "limit":1, "format": "jpg",
                 "output_directory": "static/img/coverphotos"}
                 # download image, it returns a dict containing photo path
                 coverphoto_path = self.gic.download(arguments)
                 # get path of cover photo from dict
-                coverphoto_path = Path(coverphoto_path[result['song_title'] + " cover photo"][0]);
+                coverphoto_path = Path(coverphoto_path[result['song_title'].replace(",", "") + " cover photo"][0]);
                 # rename file to desired name
                 os.rename(coverphoto_path, coverphoto)
 
             # convert duration from seconds to minutes
             result['duration'] = self.humanize_time(result['duration'])[3:]
+
+
+    def check_for_artists_photo(self, artists):
+        """
+        checks if database contains photo for an artis
+        if not than download it from googleimages
+        """
+        # itertate over each song of results
+        i = 0
+        for artist in artists:
+            i = i + 1
+            log.info(str(i))
+            # get path for coverphoto
+            photopath = artist['artist_name'].replace(" ", "").lower()
+            # if there exists any ',' in the path then remove it
+            photopath = photopath.replace(",", "")
+            photopath = Path("static/img/artistphotos/"+ photopath + ".jpg")
+
+            # if coverphoto for that song does not exists
+            if photopath.is_file() == False:
+                # set arguments to pass to gic
+                arguments = {
+                "keywords": (artist['artist_name'].replace(",", "")) + " wallpaper",
+                "limit":1, "format": "jpg",
+                "output_directory": "static/img/artistphotos"}
+                # download image, it returns a dict containing photo path
+                artist_photo_path = self.gic.download(arguments)
+                # get path of cover photo from dict
+                artist_photo_path = Path(artist_photo_path[(artist['artist_name'].replace(",", "")) + " wallpaper"][0])
+                # rename file to desired name
+                os.rename(artist_photo_path, photopath)
 
 
     def check_for_youtube_ids(self, songs, mongo):

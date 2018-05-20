@@ -1,0 +1,149 @@
+{% extends "base.html" %} {% block title %} Artists {% endblock %} {% block addCss %}
+<style>
+  #myInput {
+    /* background-image: url('../static/img/btn-search.png'); */
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+</style>
+{% endblock %} {% block sidenavigationlist %}
+<li class="nav-item">
+  <a class="nav-link" href="../examples/dashboard.html">
+    <!-- <i class="material-icons">dashboard</i> -->
+    <i class="fa fa-home fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+    <p>Home</p>
+  </a>
+</li>
+
+<li class="nav-item active">
+  <a class="nav-link" href="../examples/user.html">
+    <!-- <i class="material-icons">person</i> -->
+    <i class="fa fa-users fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+    <p>Artists</p>
+  </a>
+</li>
+
+<li class="nav-item active-pro">
+  <a class="nav-link" href="../examples/upgrade.html">
+        <i class="material-icons">unarchive</i>
+        <p>Upload a New One</p>
+      </a>
+</li>
+{% endblock %} {% block bodycontent %}
+
+<!-- <div class="wrapper"> -->
+<!-- <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+    <div class="logo">
+      <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <img src="../static/img/songs_logo.png" style="width: 70px; height: 70px; margin-right: 5px;">TopHits
+      </a>
+    </div>
+    <div class="sidebar-wrapper">
+      <ul class="nav">
+        <li class="nav-item ">
+          <a class="nav-link" href="../examples/dashboard.html">
+            <i class="material-icons">dashboard</i>
+            <p>Home</p>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../examples/user.html">
+            <i class="fa fa-users fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+            <p>Artists</p>
+          </a>
+        </li>
+        <li class="nav-item active-pro">
+          <a class="nav-link" href="../examples/upgrade.html">
+            <i class="material-icons">unarchive</i>
+            <p>Upload a New One</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+<div class="main-panel">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-wrapper">
+        <a class="navbar-brand" href="#pablo"><i class="fa fa-users fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>Artists</a>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for song names.." title="Type in a name">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Artists</h4>
+              <!-- <p class="card-category"> List of Artists </p> -->
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" id="myTable">
+                  <thead class=" text-primary">
+                    <th> Picture </th>
+                    <th> Name </th>
+                    <th> Country </th>
+                    <th> City </th>
+                    <th> No. of Songs </th>
+                  </thead>
+                  <tbody>
+                    {% for artist in artists %}
+                    <tr>
+                      <td>
+                        <img src="../static/img/artistphotos/{{ artist._id.replace(" ", "").replace(",", "").lower() + '.jpg'}}" style="width:70px; height:70px; border-radius: 50%;" alt="Cover Photo">
+                      </td>
+                      <td><a href={{ url_for("handle_user_song_search") }}>
+                         {{ artist._id }} </a></td>
+                      <td> Unknown </td>
+                      <td> Unknown </td>
+                      <td> {{ artist.count }} </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="copyright pull-right" style="margin-top: 10px;">
+    TopHits World Most Popular Site
+  </div>
+
+</div>
+
+<script>
+
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<!-- </div> -->
+{% endblock %}

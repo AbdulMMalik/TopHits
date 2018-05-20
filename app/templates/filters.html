@@ -1,0 +1,215 @@
+ {% extends "base.html" %} {% block title %} Filters {% endblock %} {% block addCss %}
+ {% block css_files %}<link href="../static/css/filters.css" rel="stylesheet" />{% endblock %}
+
+<style>
+  #myInput {
+    /* background-image: url('../static/img/btn-search.png'); */
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+
+</style>
+{% endblock %} {% block bodycontent %}
+<div class="wrapper">
+  <div class="sidebar" data-color="purple" data-background-color="white" data-image="../static/img/favicon.png">
+
+    <div class="logo">
+      <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <img src="../static/img/songs_logo.png" style="width: 70px; height: 70px; margin-right: 5px;">TopHits
+      </a>
+    </div>
+    <div class="sidebar-wrapper">
+      <ul class="nav">
+        {% block sidenavigationlist %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}">
+            <!-- <i class="material-icons">dashboard</i> -->
+            <i class="fa fa-home fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+            <p>Home</p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link" href="{{ url_for('artists') }}">
+            <!-- <i class="material-icons">person</i> -->
+            <i class="fa fa-users fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+            <p>Artists</p>
+          </a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('filters') }}">
+            <!-- <i class="material-icons">person</i> -->
+            <i class="fa fa-filter fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+            <p>Filters</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+                  <i class="material-icons">unarchive</i>
+                  <p>Upload Your Own</p>
+                </a>
+        </li>
+        {% endblock %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-panel">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+      <!-- <i class="fa fa-user">  </i> -->
+      <div class="container-fluid">
+
+        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+          <!-- <i class="fa fa-user fa-2x" aria-hidden="true" style="margin-right: 20px; color: #A641B9;"> </i> -->
+          <!-- <i class="fa fa-sign-out fa-2x" aria-hidden="true" style="color: #A641B9;"></i> -->
+          <div style="margin-right: 20px; margin-top: 5px;">
+            <a href="#about">
+              <i class="fa fa-user fa-2x" style="color: #555555"></i>
+            </a>
+            <!-- <p>
+              Profile
+            </p> -->
+          </div>
+          <div style="margin-top: 5px;">
+            <a href="#about">
+              <i class="fa fa-sign-out fa-2x" style="color: #555555"></i>
+            </a>
+            <!-- <p>
+              Logout
+            </p> -->
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8">
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for song names.." title="Type in a name">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title">Artists Song</h4>
+                <!-- <p class="card-category">Complete your profile</p> -->
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table" id="myTable">
+                    <thead class=" text-primary">
+                      <th> Cover Photo </th>
+                      <th> Song Title </th>
+                      <th> Duration </th>
+                      <th> years </th>
+                      <th> Play </th>
+                    </thead>
+                    <tbody>
+                      {% for song in searched_songs %}
+                      <tr>
+                        <td>
+                          <img src="../static/img/coverphotos/{{ song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:70px; height:70px; border-radius: 50%;" alt="Cover Photo">
+                        </td>
+                        <td> {{ song.song_title }} </td>
+                        <td> {{ song.duration }} </td>
+                        <td> {{ song.years }} </td>
+                        <td>
+                          <a href={{ url_for( "play_song", song_id=song.youtube_id, song_title=song.song_title) }} class="btn btn-primary" style="margin-top: 20px;">  <i class="fa fa-play" aria-hidden="true"></i></a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div id="filters">
+              <!-- Sliding div starts here -->
+              <div id="slider" style=" margin-left: 20px;">
+                <!-- <div id="sidebar" onclick="open_filters_panel()"><img src="../static/img/favicon.png"></div> -->
+                <form action="/search_filtered_songs" method="post" style="margin-left: 25px;">
+                  <div id="filter-form">
+                    <h2>Filters</h2>
+
+                    <input name="energy_level" type="range" min="1" max="100" value="50" class="slider" id="energy_level">
+                    <!-- <input name="energy_level_checkbox" type="checkbox" value="value" id="energy_level_checkbox" name="check" /> -->
+                    <!-- <div class="roundedOne"> -->
+                    <input name="energy_level_checkbox" type="checkbox" id="energy_level_checkbox" value="value">
+                    <!-- <label for="energy_level_checkbox"></label> -->
+                  <!-- </div> -->
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Energy Level: </b><span id="energy_level_label"> 0.5 </span></label>
+
+                    <!-- Sound Quality -->
+                    <input name="sound_quality" type="range" min="1" max="100" value="50" class="slider" id="sound_quality" style="margin-top: 5px;">
+                    <input name="sound_quality_checkbox" type="checkbox" id="sound_quality_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Sound Quality: </b><span id="sound_quality_label"> 0.5 </span></label>
+
+                    <!-- Danceability factor -->
+                    <input name="danceability" type="range" min="1" max="100" value="50" class="slider" id="danceability" style="margin-top: 5px;">
+                    <input name="danceability_checkbox" type="checkbox"  id="danceability_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Danceability: </b><span id="danceability_label"> 0.5 </span></label>
+
+                    <!-- Valence -->
+                    <input name="valence" type="range" min="1" max="100" value="50" class="slider" id="valence" style="margin-top: 5px;">
+                    <input name="valence_checkbox" type="checkbox" id="valence_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Valence: </b><span id="valence_label"> 0.5 </span></label>
+
+                    <!-- Loudness -->
+                    <input name="loudness" type="range" min="1" max="100" value="50" class="slider" id="loudness" style="margin-top: 5px;">
+                    <input name="loudness_checkbox" type="checkbox" id="loudness_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Loudness: </b><span id="loudness_label"> 0.5 </span></label>
+
+                    <!-- Instrumentalness -->
+                    <input name="instrumentalness" type="range" min="1" max="100" value="50" class="slider" id="instrumentalness" style="margin-top: 5px;">
+                    <input name="instrumentalness_checkbox" type="checkbox" id="instrumentalness_checkbox" value="value">
+                    <label for="checkbox_id" style="margin-left: 10px;"><b>Instrumentalness: </b><span id="instrumentalness_label"> 0.5 </span></label>
+                    <button type="submit" style="margin-top: 15px; float: right; background-color: #9C27B0; border: none; color: white; padding: 5px; width: 100%">
+                                                      Search</button>
+                  </div>
+                </form>
+              </div>
+              <!-- Sliding div ends here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright pull-right" style="margin-top: 10px; margin-right: 10px;">
+      TopHits World Most Popular Site
+    </div>
+  </div>
+</div>
+
+<script src="../static/js/dashboard.js"></script>
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<!-- </body> -->
+{% endblock %}
+<!-- </html> -->

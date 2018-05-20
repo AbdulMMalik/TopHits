@@ -1,0 +1,199 @@
+
+{% extends "base.html" %} {% block title %} Home {% endblock %}
+
+{% block addCss %}
+
+<style>
+#myInput {
+  /* background-image: url('../static/img/btn-search.png'); */
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+</style>
+{% endblock %}
+
+{% block bodycontent %}
+  <div class="wrapper">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../static/img/favicon.png">
+
+      <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                    <img src="../static/img/songs_logo.png" style="width: 70px; height: 70px; margin-right: 5px;">TopHits
+                </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item ">
+            <a class="nav-link" href="../examples/dashboard.html">
+                            <i class="material-icons">dashboard</i>
+                            <p>Home</p>
+                        </a>
+          </li>
+          <li class="nav-item  active">
+            <a class="nav-link" href="../examples/user.html">
+                            <i class="material-icons">person</i>
+                            <p>Artists</p>
+                        </a>
+          </li>
+          <li class="nav-item active-pro">
+            <a class="nav-link" href="../examples/upgrade.html">
+                            <i class="material-icons">unarchive</i>
+                            <p>Upload a New One</p>
+                        </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+        <i class="fa fa-user">  </i>
+          <div class="container-fluid">
+
+              <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                <!-- <i class="fa fa-user fa-2x" aria-hidden="true" style="margin-right: 20px; color: #A641B9;"> </i> -->
+                <!-- <i class="fa fa-sign-out fa-2x" aria-hidden="true" style="color: #A641B9;"></i> -->
+                <div style="margin-right: 20px; margin-top: 5px;">
+                  <a href="#about">
+                    <i class="fa fa-user fa-2x"></i>
+                  </a>
+                  <p>
+                    Profile
+                  </p>
+                </div>
+                <div style="margin-top: 5px;">
+                  <a href="#about">
+                    <i class="fa fa-sign-out fa-2x"></i>
+                  </a>
+                  <p>
+                    Logout
+                  </p>
+                </div>
+                  <!-- <form class="navbar-form">
+                      <div class="input-group no-border">
+                          <input type="text" value="" class="form-control" size="50" placeholder="Search Song by title">
+                          <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                              <i class="material-icons">search</i>
+                              <div class="ripple-container"></div>
+                          </button
+                      </div>
+                  </form> -->
+              </div>
+          </div>
+      </nav>
+      <!-- <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-wrapper"> -->
+            <!-- <img src="../static/img/ellie-goulding.jpg" alt="Avatar" style="width:100px; height: 100px; "> -->
+            <!-- <a class="navbar-brand" href="#pablo"><i class="material-icons">person</i>Artist</a>
+          </div> -->
+
+          <!-- <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <form class="navbar-form">
+              <div class="input-group no-border">
+                <input type="text" value="" class="form-control" size="50" placeholder="Search Song by title">
+                <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                    <i class="material-icons">search</i> -->
+                                    <!-- <div class="ripple-container"></div> -->
+                                <!-- </button
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav> -->
+
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for song names.." title="Type in a name">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title">Artists Song</h4>
+                                    <!-- <p class="card-category">Complete your profile</p> -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="myTable">
+                                            <thead class=" text-primary">
+                                                <th> Cover Photo </th>
+                                                <th> Song Title </th>
+                                                <th> Duration </th>
+                                                <th> years </th>
+                                                <th> Play </th>
+                                            </thead>
+                                            <tbody>
+                                              {% for song in searched_songs %}
+                                                <tr>
+                                                  <td>
+                                                    <img src="../static/img/coverphotos/{{ song.song_title.replace(" ", "").lower() + '.jpg'}}" style="width:70px; height:70px; border-radius: 50%;" alt="Cover Photo">
+                                                  </td>
+                                                  <td> {{ song.song_title }} </td>
+                                                  <td> {{ song.duration }} </td>
+                                                  <td> {{ song.years }} </td>
+                                                  <td>
+                                                    <a href={{ url_for("play_song", song_id=song.youtube_id, song_title=song.song_title) }} class="btn btn-primary" style="margin-top: 20px;">  <i class="fa fa-play" aria-hidden="true"></i></a>
+                                                  </td>
+                                                </tr>
+                                              {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card card-profile">
+                                <div class="card-avatar">
+                                    <a href="#pablo">
+                                      <img src="../static/img/ellie-goulding.jpg" alt="Avatar" style="width:100px; height: 100px; ">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-category text-gray">69 Followers</h6>
+                                    <h4 class="card-title">Ellie Goulding</h4>
+                                    <p class="card-description">
+                                    </p>
+                                    <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          <div class="copyright pull-right" style="margin-top: 10px; margin-right: 10px;">
+                TopHits World Most Popular Site
+          </div>
+        </div>
+    </div>
+
+  <script>
+     function myFunction() {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+</script>
+<!-- </body> -->
+{% endblock %}
+<!-- </html> -->

@@ -26,6 +26,9 @@
   <!-- <link href="../static/css/dashboard.css" rel="stylesheet" /> -->
   <!-- <script src="../static/js/dashboard.js"></script> -->
   {% endblock %}
+
+  {% block addCss %}
+  {% endblock %}
 </head>
 
 <body class="">
@@ -41,29 +44,42 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
 
+          {% block sidenavigationlist %}
           <li class="nav-item active ">
-            <a class="nav-link" href="../examples/dashboard.html">
-                  <i class="material-icons">dashboard</i>
+            <a class="nav-link" href="{{ url_for('home') }}">
+                  <!-- <i class="material-icons">dashboard</i> -->
+                  <i class="fa fa-home fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
                     <p>Home</p>
                 </a>
           </li>
 
           <li class="nav-item ">
-            <a class="nav-link" href="../examples/user.html">
-                  <i class="material-icons">person</i>
+            <a class="nav-link" href="{{ url_for('artists') }}">
+                  <!-- <i class="material-icons">person</i> -->
+                  <i class="fa fa-users fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
                     <p>Artists</p>
                 </a>
           </li>
 
-          <li class="nav-item active-pro">
-            <a class="nav-link" href="../examples/upgrade.html">
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ url_for('filters') }}">
+              <!-- <i class="material-icons">person</i> -->
+              <i class="fa fa-filter fa-2x" style="padding-right: 5px;" aria-hidden="true"></i>
+              <p>Filters</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">
                   <i class="material-icons">unarchive</i>
-                  <p>Upload a New One</p>
+                  <p>Upload Your Own</p>
                 </a>
           </li>
+          {% endblock %}
 
         </ul>
       </div>
+
     </div>
     {% endblock %}
 
