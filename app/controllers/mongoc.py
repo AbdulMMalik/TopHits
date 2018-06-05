@@ -234,7 +234,15 @@ class MongoController():
         """
         get all artists in mongodb
         """
-        cursor =  mongo.db.songs.aggregate([{'$group': {'_id': "$artist_name", 'count': {'$sum': 1}}}, {'$limit': 200}])
+        cursor =  mongo.db.songs.aggregate([{
+        '$group': {
+            '_id': "$artist_name",
+            'count': {
+                '$sum': 1
+                }
+            }},
+            {'$limit': 200}
+        ])
         artists = []
         for res in cursor:
             artists.append({
